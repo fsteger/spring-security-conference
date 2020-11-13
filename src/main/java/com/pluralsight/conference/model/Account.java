@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 public class Account {
     @NotNull
     @NotEmpty
-    private String usrername;
+    private String username;
 
     @NotNull
     @NotEmpty
@@ -28,12 +28,12 @@ public class Account {
     @NotEmpty
     private String email;
 
-    public String getUsrername() {
-        return usrername;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsrername(String usrername) {
-        this.usrername = usrername;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
