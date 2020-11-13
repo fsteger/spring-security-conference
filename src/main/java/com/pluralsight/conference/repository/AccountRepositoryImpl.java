@@ -30,7 +30,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void saveToken(VerificationToken verificationToken) {
         JdbcTemplate template = new JdbcTemplate(dataSource);
-        template.update("INSERT INTO verification_tokens (username , token, expiry_date) VALUES " +
+        template.update("INSERT INTO verification_tokens (username , token, expiration_date) VALUES " +
                         "(?,?,?)", verificationToken.getUsername(),
                 verificationToken.getToken(),
                 verificationToken.calculateExpirationDate(verificationToken.EXPIRATION));
