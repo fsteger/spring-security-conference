@@ -1,6 +1,7 @@
 package com.pluralsight.conference.repository;
 
 import com.pluralsight.conference.model.Account;
+import com.pluralsight.conference.model.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,5 +25,14 @@ public class AccountRepositoryImpl implements AccountRepository {
                 account.getLastName());
 
         return account;
+    }
+
+    @Override
+    public void saveToken(VerificationToken verificationToken) {
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        template.update("INSERT INTO verification_tokens (username , token, expiry_date) VALUES " +
+                        "(?,?,?)", verificationToken.getUsername(),
+                verificationToken.getToken(),
+                verificationToken.calculateExpirationDate(verificationToken.EXPIRATION));
     }
 }

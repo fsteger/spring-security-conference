@@ -2,7 +2,9 @@ package com.pluralsight.conference.controller;
 
 import com.pluralsight.conference.model.Account;
 import com.pluralsight.conference.service.AccountService;
+import com.pluralsight.conference.util.OnCreateAccountEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,9 @@ public class AccountController {
     @Autowired
     private PasswordEncoder encoder;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @GetMapping("account")
     public String getRegistration(@ModelAttribute("account") Account account) {
         return "account";
@@ -34,6 +39,8 @@ public class AccountController {
         account.setPassword(encoder.encode(account.getPassword()));
 
         account = accountService.create(account);
+
+        applicationEventPublisher.publishEvent(new OnCreateAccountEvent(account, "conference_war"));
 
         return "redirect:account";
     }
