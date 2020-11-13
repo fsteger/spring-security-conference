@@ -32,6 +32,7 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/anonymous*").anonymous()
                 .antMatchers("/login*").permitAll()
+                .antMatchers("/account*").permitAll()
                 .antMatchers("/assets/css/**", "/assets/js/**", "/images/**").permitAll()
                 .antMatchers("/index*").permitAll()
                 .anyRequest().authenticated()
@@ -67,7 +68,7 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.ldapAuthentication()
+        /*auth.ldapAuthentication()
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
                 .contextSource()
@@ -77,9 +78,11 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .passwordAttribute("userPassword")
                 .and()
-                .userDetailsContextMapper(ctxMapper);
+                .userDetailsContextMapper(ctxMapper);*/
 
-//        auth.jdbcAuthentication().dataSource(dataSource);
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder());
 //        auth.inMemoryAuthentication()
 //                .withUser("fox")
 //                .password(passwordEncoder().encode("pass"))
