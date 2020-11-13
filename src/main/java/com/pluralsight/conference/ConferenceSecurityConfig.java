@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -46,7 +47,15 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .key("superSecretKey")
-                .tokenRepository(tokenRepository());
+                .tokenRepository(tokenRepository())
+
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/perform_logout", "GET"))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll();
     }
 
     @Bean
