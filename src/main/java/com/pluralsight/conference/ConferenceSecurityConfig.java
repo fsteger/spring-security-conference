@@ -32,10 +32,13 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/assets/css/**", "/assets/js/**", "/images/**").permitAll()
                 .antMatchers("/index*").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/perform_login")
+                .failureUrl("/login?error=true")
+                .permitAll()
                 .defaultSuccessUrl("/", true);
     }
 
