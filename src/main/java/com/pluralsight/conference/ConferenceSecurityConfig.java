@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -39,7 +41,19 @@ public class ConferenceSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/perform_login")
                 .failureUrl("/login?error=true")
                 .permitAll()
-                .defaultSuccessUrl("/", true);
+                .defaultSuccessUrl("/", true)
+
+                .and()
+                .rememberMe()
+                .key("superSecretKey")
+                .tokenRepository(tokenRepository());
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
     }
 
     @Override
