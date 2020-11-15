@@ -51,4 +51,12 @@ CREATE TABLE verification_tokens (
     PRIMARY KEY (username, token)
 );
 
+CREATE TABLE reset_tokens (
+    email VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    token VARCHAR(100) NOT NULL,
+    expiration_date DATETIME NOT NULL,
+    PRIMARY KEY (username, token)
+);
+
 
